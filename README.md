@@ -33,6 +33,11 @@ For example, I cloned it inside a directory in my $HOME folder called `pyscripts
 so the path is 
 > $HOME/pyscripts/calculate_eps/calculate.py
 
+Now make the calculate_eps file executable with
+```
+chmod +x calculate_eps
+```
+
 ### 5. Run It
 In one of your job directories, you should now be able to run 
 ```
