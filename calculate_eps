@@ -1,5 +1,5 @@
 #!/bin/bash
-module load CCEnv StdEnv/2020
-module load scipy-stack/2020b
+# module load CCEnv StdEnv/2020
+# module load scipy-stack/2020b
 
-python $HOME/pyscripts/calculate_eps/calculate.py "$@"
+python $HOME/pyscripts/eps_calculator/calculate.py "$@"

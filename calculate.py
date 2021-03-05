@@ -17,8 +17,6 @@ parser.add_argument('--inclusion-element', default='Ag', help='Inclusion element
 args = parser.parse_args()
 
 # Load Cell as a numpy array from an output file
-print(args)
-
 cell = parsers.get_final_cell(args.zero_field)
 
 # volume of cell used for calculating polarization density
