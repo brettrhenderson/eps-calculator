@@ -13,8 +13,6 @@ parser.add_argument('--plot', '-p', action='store_true', help='Plot the extracte
 parser.add_argument('--extend', '-e', action='store_true', help='keep appending steps rather than overwriting them for step 9 (if reset_counters used by accident).')
 parser.add_argument('--nosort', '-n', action='store_true', help='do not sort filenames. Use the input order.')
 parser.add_argument('--efield', type=float, default=0.001, help='Electric field in au, default=0.001.')
-parser.add_argument('--eps-bulk', type=float, default=9.26, help='Rel Permittivity of the bulk, for calculating enhancement, default=9.26.')
-parser.add_argument('--eps-inf-bulk', type=float, default=3.04, help='High frequency Rel Permittivity of the bulk, default=3.04')
 parser.add_argument('--inclusion-element', default='Ag', help='Inclusion element symbol, default=Ag')
 args = parser.parse_args()
 
@@ -86,26 +84,18 @@ ae = analysis.correct_jumps(ae_uncorrected, jump_quantum=pquant, jump_threshold=
 ai = analysis.correct_jumps(ai_uncorrected, jump_quantum=pquant)
 
 coords = parsers.get_final_positions(args.zero_field)
-try:
-    al = len(coords[args.inclusion_element])/(sum([len(coords[el]) for el in coords]))
-except:
-    al = 1
+
 eps_r = 1 + 4*np.pi * (atot[-1]) / vol / args.efield               # atot already is referenced to initial pol
 eps_inf = 1 + 4*np.pi * (p1[-1, -1] - p0[-1]) / vol / args.efield  # assumes no jumps in clamped ion step
-alpha_r = (eps_r - args.eps_bulk) / (4 * np.pi * al)
-alpha_inf = (eps_inf - args.eps_inf_bulk) / (4 * np.pi * al)
 
 print(f'pq = {pquant}, p_i = {p0[-1]}, p_ci = {p1[-1, -1]}, p_f = {p2[-1, -1]}, vol={vol}, efield = {args.efield}')
 print(
 f"""
 Dielectric Constants:
 
-|  High Frequency   |  Low Frequency   |  alpha_inf   |   alpha_r   | 
-|-------------------|------------------|--------------|-------------|
-|        {eps_inf:.3f}      |       {eps_r:.3f}     |    {alpha_inf:.3f}     |     {alpha_r:.3f}   | 
-
-* alpha values calculated using a bulk matrix relative permittivity of {args.eps_bulk} 
-  and high frequency permittivity {args.eps_inf_bulk}.
+|  High Frequency   |  Low Frequency   | 
+|-------------------|------------------|
+|        {eps_inf:.3f}      |       {eps_r:.3f}     | 
 """
 )
 
