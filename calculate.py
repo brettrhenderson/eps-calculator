@@ -88,7 +88,7 @@ coords = parsers.get_final_positions(args.zero_field)
 eps_r = 1 + 4*np.pi * (atot[-1]) / vol / args.efield               # atot already is referenced to initial pol
 eps_inf = 1 + 4*np.pi * (p1[-1, -1] - p0[-1]) / vol / args.efield  # assumes no jumps in clamped ion step
 
-print(f'pq = {pquant}, p_i = {p0[-1]}, p_ci = {p1[-1, -1]}, p_f = {p2[-1, -1]}, vol={vol}, efield = {args.efield}')
+print(f'pq = {pquant:0.3f}, p_i = {p0[-1]:0.3f}, p_ci = {p1[-1, -1]:0.3f}, p_f = {p2[-1, -1]:0.3f}, vol={vol:0.3f}, efield = {args.efield:0.4f}')
 print(
 f"""
 Dielectric Constants:
@@ -105,21 +105,22 @@ if args.plot:
 
     # uncorrected
     ax1.set_title('Uncorrected Cell Dipole', fontsize=18)
-    ax1.plot(time, atot_uncorrected, label="Total")
-    ax1.plot(time, ae_uncorrected, label="Electronic")
-    ax1.plot(time, ai_uncorrected, label="Ionic")
-    ax1.legend(fontsize=16)
-    ax1.set_xlabel('Time / au', fontsize=16)
-    ax1.set_ylabel('Cell Dipole', fontsize=16)
-    ax1.hlines(0, 0,6400, 'k', linestyle='--')
+    ax1.plot(time, atot_uncorrected, label="Total", linewidth=2)
+    ax1.plot(time, ae_uncorrected, label="Electronic", linewidth=2)
+    ax1.plot(time, ai_uncorrected, label="Ionic", linewidth=2)
 
     # corrected
     ax2.set_title('Corrected Cell Dipole', fontsize=18)
-    ax2.plot(time, atot, label='Total')
-    ax2.plot(time, ae, label='Electronic')
-    ax2.plot(time, ai, label='Ionic')
-    ax2.hlines(0, 0,6400, 'k', linestyle='--')
-    ax2.legend()
+    ax2.plot(time, atot, label='Total', linewidth=2)
+    ax2.plot(time, ae, label='Electronic', linewidth=2)
+    ax2.plot(time, ai, label='Ionic', linewidth=2)
+    
+    for ax in [ax1, ax2]:
+        ax.set_xlabel('Time / au', fontsize=16)
+        ax.axhline(y=0, color='k', linestyle='--')
+        ax.set_ylabel('Cell Dipole', fontsize=16)
+        ax.legend(fontsize=16)
+        ax.tick_params(labelsize=12)
 
     plt.tight_layout()
     plt.show()
